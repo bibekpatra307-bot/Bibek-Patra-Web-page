@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Portfolio | Creative Works</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .sub {
+            color: #475569;
+            margin-bottom: 2rem;
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+        }
+        .websites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 2rem;
+        }
+        .website-card {
+            background: white;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .website-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2);
+        }
+        .slider-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+        .slider-track {
+            display: flex;
+            transition: transform 0.4s ease;
+            height: 100%;
+        }
+        .slider-track img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.2s;
+            z-index: 2;
+        }
+        .slider-btn:hover {
+            background: rgba(0,0,0,0.8);
+        }
+        .prev { left: 12px; }
+        .next { right: 12px; }
+        .card-content {
+            padding: 1.5rem;
+        }
+        .card-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .card-content p {
+            color: #334155;
+            line-height: 1.5;
+        }
+        .no-images {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 2rem;
+        }
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+        }
+        @media (max-width: 760px) {
+            body { padding: 1rem; }
+            .websites-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>✨ Creative Showcase</h1>
+    <div class="sub">Explore our latest websites & projects – each with a photo story</div>
+    <div id="websitesList" class="websites-grid">
+        <div class="loading"><i class="fas fa-spinner fa-pulse"></i> Loading creations...</div>
+    </div>
+    <footer>© 2026 | Dynamic portfolio powered by Firebase</footer>
+</div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB16iYSnLIi95GOuLKnhwHosZZozmKGCAA",
+        authDomain: "bibek-patra-web-page.firebaseapp.com",
+        projectId: "bibek-patra-web-page",
+        storageBucket: "bibek-patra-web-page.firebasestorage.app",
+        messagingSenderId: "814616985051",
+        appId: "1:814616985051:web:713590937c3be5e5813bfe"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadWebsites() {
+        const container = document.getElementById('websitesList');
+        container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Loading...</div>';
+        try {
+            const q = query(collection(db, "websites"), orderBy("createdAt", "desc"));
+            const snapshot = await getDocs(q);
+            if (snapshot.empty) {
+                container.innerHTML = '<div class="loading">✨ No websites yet. Admin can add from panel.</div>';
+                return;
+            }
+            let html = '';
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const name = data.name || 'Untitled';
+                const desc = data.description || '';
+                const imageUrls = data.imageUrls || [];
+                html += `
+                    <div class="website-card" data-id="${doc.id}">
+                        <div class="slider-container" id="slider-${doc.id}">
+                            <button class="slider-btn prev" data-id="${doc.id}"><i class="fas fa-chevron-left"></i></button>
+                            <div class="slider-track" id="track-${doc.id}">
+                                ${imageUrls.length === 0 ? '<div class="no-images">📷 No images added</div>' : imageUrls.map(url => `<img src="${url}" alt="project view" loading="lazy">`).join('')}
+                            </div>
+                            <button class="slider-btn next" data-id="${doc.id}"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="card-content">
+                            <h3>${escapeHtml(name)}</h3>
+                            <p>${escapeHtml(desc)}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            // attach slider logic for each card
+            snapshot.forEach(doc => {
+                const id = doc.id;
+                const data = doc.data();
+                const imageUrls = data.imageUrls || [];
+                if (imageUrls.length <= 1) {
+                    // hide buttons if less than 2 images
+                    const btns = document.querySelectorAll(`#slider-${id} .slider-btn`);
+                    btns.forEach(btn => btn.style.display = 'none');
+                    return;
+                }
+                let currentIndex = 0;
+                const track = document.getElementById(`track-${id}`);
+                const prevBtn = document.querySelector(`#slider-${id} .prev`);
+                const nextBtn = document.querySelector(`#slider-${id} .next`);
+                const updateSlider = () => {
+                    const percent = -currentIndex * 100;
+                    track.style.transform = `translateX(${percent}%)`;
+                };
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
+                    updateSlider();
+                });
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % imageUrls.length;
+                    updateSlider();
+                });
+            });
+        } catch (error) {
+            console.error(error);
+            container.innerHTML = '<div class="loading">⚠️ Failed to load. Check Firebase rules.</div>';
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    loadWebsites();
+</script>
+</body>
+</html>
