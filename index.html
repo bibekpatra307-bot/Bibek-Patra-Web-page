@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Bibek Patra - Creator, Web Developer, Video Editor, Graphic Designer & Digital Marketer. Explore portfolio, projects, music and creative work.">
+    <meta name="keywords" content="Bibek Patra, web developer, video editor, graphic designer, portfolio, Firebase, creative">
+    <meta name="author" content="Bibek Patra">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Bibek Patra | Creative Portfolio">
+    <meta property="og:description" content="Creator • Web Developer • Video Editor • Graphic Designer • Digital Marketer">
+    <meta property="og:type" content="website">
+    <title>Bibek Patra | Creative Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #16161f;
+            --bg-card-hover: #1c1c28;
+            --text-primary: #e8e8f0;
+            --text-secondary: #b0b0c0;
+            --text-muted: #787890;
+            --accent-blue: #4f7df3;
+            --accent-purple: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #4f7df3, #8b5cf6, #a855f7);
+            --border-color: #252535;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 40px rgba(79, 125, 243, 0.15), 0 0 80px rgba(139, 92, 246, 0.08);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --nav-height: 72px;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f7fc;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f8fafd;
+            --text-primary: #1a1a2e;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-ring { width: 56px; height: 56px; border-radius: 50%; border: 3px solid var(--border-color); border-top-color: var(--accent-blue); animation: spin 0.8s linear infinite; }
+        .loader-text { margin-top: 18px; font-weight: 600; background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Navbar */
+        .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: var(--nav-height); background: rgba(10, 10, 15, 0.75); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); transition: all var(--transition); }
+        [data-theme="light"] .navbar { background: rgba(255, 255, 255, 0.8); }
+        .nav-container { max-width: 1280px; margin: 0 auto; padding: 0 24px; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.4rem; background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .nav-links { display: flex; gap: 8px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 0.9rem; padding: 8px 16px; border-radius: 50px; transition: all var(--transition); }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: var(--bg-card); }
+        .nav-actions { display: flex; gap: 10px; align-items: center; }
+        .theme-toggle, .search-toggle, .hamburger { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition); }
+        .hamburger { display: none; }
+        @media (max-width: 860px) { .nav-links { display: none; position: absolute; top: var(--nav-height); left: 0; width: 100%; background: var(--bg-secondary); flex-direction: column; padding: 20px; border-bottom: 1px solid var(--border-color); } .nav-links.show { display: flex; } .hamburger { display: flex; } }
+
+        /* Sections & Cards */
+        .section { padding: 90px 24px; max-width: 1280px; margin: 0 auto; }
+        .section-label { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
+        .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; margin-bottom: 16px; }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 28px; transition: all var(--transition); }
+        .card:hover { background: var(--bg-card-hover); transform: translateY(-4px); border-color: rgba(79,125,243,0.4); }
+        .card-icon { width: 52px; height: 52px; border-radius: var(--radius-md); background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.4rem; margin-bottom: 18px; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all var(--transition); border: none; cursor: pointer; }
+        .btn-primary { background: var(--accent-gradient); color: white; box-shadow: 0 4px 12px rgba(79,125,243,0.3); }
+        .btn-outline { border: 2px solid var(--border-color); background: transparent; color: var(--text-primary); }
+        .hero-section { min-height: 100vh; display: flex; align-items: center; padding: calc(var(--nav-height) + 40px) 24px 60px; max-width: 1280px; margin: 0 auto; }
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .hero-image-container { position: relative; width: 280px; height: 280px; border-radius: 50%; padding: 4px; background: var(--accent-gradient); box-shadow: var(--shadow-glow); margin: 0 auto; }
+        .hero-image { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: var(--bg-card); }
+        .timeline { position: relative; padding-left: 2rem; }
+        .timeline-item { margin-bottom: 2rem; position: relative; border-left: 2px solid var(--accent-blue); padding-left: 1.5rem; }
+        .masonry { column-count: 3; column-gap: 1.5rem; }
+        .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; border-radius: var(--radius-lg); overflow: hidden; }
+        .filter-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+        .filter-btn { background: var(--bg-card); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 40px; cursor: pointer; transition: all 0.2s; }
+        .filter-btn.active, .filter-btn:hover { background: var(--accent-gradient); color: white; border-color: transparent; }
+        .search-overlay { position: fixed; inset: 0; z-index: 9998; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); display: flex; align-items: flex-start; justify-content: center; padding-top: 120px; opacity: 0; visibility: hidden; transition: all var(--transition); }
+        .search-overlay.active { opacity: 1; visibility: visible; }
+        .search-box { width: 90%; max-width: 600px; }
+        .search-results { margin-top: 16px; background: var(--bg-card); border-radius: var(--radius-md); padding: 12px; display: none; max-height: 320px; overflow-y: auto; }
+        .footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--border-color); color: var(--text-muted); }
+        @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; text-align: center; } .masonry { column-count: 2; } }
+        @media (max-width: 560px) { .masonry { column-count: 1; } }
+        audio { width: 100%; margin-top: 12px; border-radius: 40px; }
+        .visitor-badge { display: inline-block; background: var(--bg-card); padding: 6px 14px; border-radius: 40px; font-size: 0.8rem; margin-left: 16px; }
+    </style>
+</head>
+<body>
+
+<div id="loader"><div class="loader-ring"></div><div class="loader-text">LOADING PORTFOLIO</div></div>
+
+<nav class="navbar">
+    <div class="nav-container"><a href="#" class="nav-logo">Bibek<span style="color:var(--accent-blue);">.</span></a>
+        <ul class="nav-links" id="navLinks"><li><a href="#home" class="nav-link">Home</a></li><li><a href="#about" class="nav-link">About</a></li><li><a href="#skills" class="nav-link">Skills</a></li><li><a href="#experience" class="nav-link">Experience</a></li><li><a href="#projects" class="nav-link">Projects</a></li><li><a href="#music" class="nav-link">Music</a></li><li><a href="#gallery" class="nav-link">Gallery</a></li><li><a href="#blog" class="nav-link">Updates</a></li><li><a href="#contact" class="nav-link">Contact</a></li></ul>
+        <div class="nav-actions"><button class="search-toggle" id="searchToggle"><i class="fas fa-search"></i></button><button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button><button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button></div>
+    </div>
+</nav>
+
+<div class="search-overlay" id="searchOverlay"><div class="search-box"><input type="text" id="searchInput" placeholder="Search projects, blogs..."><div class="search-results" id="searchResults"></div></div><button class="search-close" id="searchClose"><i class="fas fa-times"></i></button></div>
+
+<main>
+    <section id="home" class="hero-section">
+        <div class="hero-grid"><div><div class="hero-badge" style="display:inline-flex; gap:8px; background:var(--bg-card); padding:6px 18px; border-radius:50px;"><span class="dot" style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;"></span><span>Open for work</span></div><h1 class="hero-name" style="font-family:'Space Grotesk';font-size:clamp(2.8rem,6vw,4rem);">Bibek <span class="gradient-text">Patra</span></h1><div class="hero-role">Creator • Web Developer • Video Editor • Graphic Designer • Digital Marketer</div><p class="hero-intro">I enjoy building websites, creating digital content, editing videos, designing graphics, learning new technologies, and helping people through creative and technical solutions.</p><div class="hero-buttons" style="display:flex;gap:14px;"><a href="#projects" class="btn btn-primary">View Projects</a><a href="#contact" class="btn btn-outline">Contact Me</a></div></div><div class="hero-image-container"><img id="profileImage" class="hero-image" src="https://ui-avatars.com/api/?background=4f7df3&color=fff&name=Bibek+Patra&size=280&length=2" alt="Bibek"></div></div>
+    </section>
+
+    <section id="about" class="section"><span class="section-label">MY STORY</span><h2 class="section-title">Passion meets <span class="gradient-text">purpose</span></h2><p style="max-width:800px; margin-bottom:24px;">I'm Bibek, a multidisciplinary creator from Odisha, India. With a deep passion for technology and creativity, I specialize in web development, video editing, graphic design, and digital marketing. I believe in continuous learning and self-improvement, always exploring new tools like Blender, Firebase, and DaVinci Resolve to bring ideas to life. My mission is to help individuals and brands grow through stunning digital experiences and meaningful content.</p></section>
+
+    <section id="skills" class="section"><span class="section-label">EXPERTISE</span><h2 class="section-title">Skills & <span class="gradient-text">tools</span></h2><div class="cards-grid"><div class="card"><div class="card-icon"><i class="fas fa-code"></i></div><h3>Web Development</h3><p>HTML, CSS, JavaScript, Firebase, GitHub, responsive design</p></div><div class="card"><div class="card-icon"><i class="fas fa-pen-fancy"></i></div><h3>Creative Suite</h3><p>DaVinci Resolve, Photoshop, Graphic Design, Blender 3D, Photo/Video Editing</p></div><div class="card"><div class="card-icon"><i class="fas fa-chart-line"></i></div><h3>Professional</h3><p>Marketing Management, Financial Services, Teaching, Team Leadership</p></div></div></section>
+
+    <section id="experience" class="section"><span class="section-label">JOURNEY</span><h2 class="section-title">Work <span class="gradient-text">experience</span></h2><div class="timeline"><div class="timeline-item"><h3>Financial Service Provider (GroMo) | 2022-2025</h3><p>Assisted 150+ clients, increased product adoption by 25%, trained agents on compliance.</p></div><div class="timeline-item"><h3>Affiliate Marketer (SkillsBazzar) | 2022-2025</h3><p>Generated 20% sales growth, built community of 300+ learners, boosted course enrollments by 40%.</p></div><div class="timeline-item"><h3>Marketing Manager (Rising Sky Academy) | 2024</h3><p>Increased admissions by 35% through local marketing strategies, built school partnerships.</p></div><div class="timeline-item"><h3>Supervisor (Sree Metaliks Ltd.) | 2024</h3><p>Supervised 50+ workers, improved workflow efficiency by 15%.</p></div><div class="timeline-item"><h3>Teacher | Sri Aurobindo Integral Education Centre</h3><p>Taught 120+ students, 70% placed in reputed government schools.</p></div></div></section>
+
+    <section id="projects" class="section"><span class="section-label">PORTFOLIO</span><h2 class="section-title">Featured <span class="gradient-text">projects</span></h2><div class="filter-buttons" id="projectFilters"><button class="filter-btn active" data-filter="all">All</button><button class="filter-btn" data-filter="web">Web</button><button class="filter-btn" data-filter="design">Design</button><button class="filter-btn" data-filter="video">Video</button></div><div id="projectsContainer" class="cards-grid"><div class="loading">Loading projects...</div></div></section>
+
+    <section id="music" class="section"><span class="section-label">SOUNDSCAPES</span><h2 class="section-title">Original <span class="gradient-text">music</span></h2><div id="musicContainer" class="cards-grid"><div class="loading">Loading tracks...</div></div></section>
+
+    <section id="gallery" class="section"><span class="section-label">VISUAL GALLERY</span><h2 class="section-title">Creative <span class="gradient-text">showcase</span></h2><div id="galleryContainer" class="masonry"></div></section>
+
+    <section id="blog" class="section"><span class="section-label">LATEST UPDATES</span><h2 class="section-title">Ideas & <span class="gradient-text">announcements</span></h2><div id="blogContainer" class="cards-grid"></div></section>
+
+    <section id="contact" class="section"><span class="section-label">CONNECT</span><h2 class="section-title">Let's work <span class="gradient-text">together</span></h2><div style="display:flex; flex-wrap:wrap; gap:40px;"><div style="flex:1;"><p><i class="fas fa-envelope"></i> patrabibek802@gmail.com</p><p><i class="fab fa-github"></i> github.com/bibekpatra</p><p><i class="fab fa-linkedin"></i> linkedin.com/in/bibek-patra</p><div style="margin-top:24px; display:flex; gap:16px;"><a href="#" style="color:var(--text-secondary); font-size:1.6rem;"><i class="fab fa-instagram"></i></a><a href="#" style="color:var(--text-secondary); font-size:1.6rem;"><i class="fab fa-x-twitter"></i></a></div></div><div style="flex:2;"><form id="contactForm"><input type="text" id="contactName" placeholder="Your Name" required style="width:100%; padding:12px; border-radius:40px; background:var(--bg-card); border:1px solid var(--border-color); margin-bottom:12px;"><input type="email" id="contactEmail" placeholder="Email" required style="width:100%; padding:12px; border-radius:40px; background:var(--bg-card); border:1px solid var(--border-color); margin-bottom:12px;"><textarea id="contactMsg" rows="4" placeholder="Message" required style="width:100%; padding:12px; border-radius:20px; background:var(--bg-card); border:1px solid var(--border-color);"></textarea><button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane"></i></button></form></div></div></section>
+</main>
+<footer class="footer"><p>© 2026 Bibek Patra. All Rights Reserved. | Made with ❤️ by Bibek Patra | <span id="visitorCount"><i class="fas fa-eye"></i> Loading visits...</span></p></footer>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, addDoc, query, orderBy, limit, updateDoc, increment, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+    const firebaseConfig = { apiKey: "AIzaSyB16iYSnLIi95GOuLKnhwHosZZozmKGCAA", authDomain: "bibek-patra-web-page.firebaseapp.com", projectId: "bibek-patra-web-page", storageBucket: "bibek-patra-web-page.firebasestorage.app", messagingSenderId: "814616985051", appId: "1:814616985051:web:713590937c3be5e5813bfe" };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    // Loader
+    window.addEventListener('load', () => { document.getElementById('loader').classList.add('hidden'); setTimeout(()=>{ document.getElementById('loader').style.display='none'; },500); });
+
+    // Theme
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeToggle').addEventListener('click', () => { const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; html.setAttribute('data-theme', newTheme); localStorage.setItem('theme', newTheme); });
+
+    // Mobile menu
+    const hamburger = document.getElementById('hamburger'); const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('show'));
+    document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => navLinks.classList.remove('show')));
+
+    // Visitor counter
+    async function updateVisitorCount() { const counterRef = doc(db, 'stats', 'visitors'); const docSnap = await getDoc(counterRef); if(docSnap.exists()) await updateDoc(counterRef, { count: increment(1) }); else await setDoc(counterRef, { count: 1 }); const updated = await getDoc(counterRef); document.getElementById('visitorCount').innerHTML = `<i class="fas fa-eye"></i> ${updated.data().count} visits`; } updateVisitorCount();
+
+    // Helper: load projects
+    async function loadProjects() { const container = document.getElementById('projectsContainer'); const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc')); const snap = await getDocs(q); if(snap.empty) { container.innerHTML = '<div>No projects yet. Add via Firebase Console.</div>'; return; } let html = ''; snap.forEach(doc => { const p = doc.data(); html += `<div class="card project-card" data-category="${p.category || 'web'}"><div class="card-icon"><i class="fas fa-${p.icon || 'code'}"></i></div><h3>${p.name}</h3><p>${p.description || ''}</p><div style="margin:12px 0"><small>${p.tech || ''}</small></div><div style="display:flex; gap:12px;"><a href="${p.demoUrl || '#'}" target="_blank" class="btn btn-primary" style="padding:6px 16px;">Live</a><a href="${p.githubUrl || '#'}" target="_blank" class="btn btn-outline" style="padding:6px 16px;">GitHub</a></div></div>`; }); container.innerHTML = html; attachFilter(); }
+    async function loadMusic() { const container = document.getElementById('musicContainer'); const q = query(collection(db, 'music'), orderBy('createdAt', 'desc')); const snap = await getDocs(q); if(snap.empty) { container.innerHTML = '<div>No tracks. Upload audio to Firebase Storage and add to "music" collection.</div>'; return; } let html = ''; snap.forEach(doc => { const m = doc.data(); html += `<div class="card"><div class="card-icon"><i class="fas fa-headphones"></i></div><h3>${m.title}</h3><p>${m.description || ''}</p><audio controls src="${m.audioUrl || ''}"></audio></div>`; }); container.innerHTML = html; }
+    async function loadGallery() { const container = document.getElementById('galleryContainer'); const q = query(collection(db, 'gallery'), orderBy('order', 'asc')); const snap = await getDocs(q); if(snap.empty) { container.innerHTML = '<div>No images yet. Add to gallery collection.</div>'; return; } let html = ''; snap.forEach(doc => { const img = doc.data(); html += `<div class="masonry-item"><img src="${img.url}" alt="${img.caption}" style="width:100%; border-radius:20px; display:block;"></div>`; }); container.innerHTML = html; }
+    async function loadBlog() { const container = document.getElementById('blogContainer'); const q = query(collection(db, 'blog'), orderBy('date', 'desc'), limit(6)); const snap = await getDocs(q); if(snap.empty) { container.innerHTML = '<div>No updates yet. Share your thoughts via Firestore blog collection.</div>'; return; } let html = ''; snap.forEach(doc => { const b = doc.data(); html += `<div class="card"><div class="card-icon"><i class="fas fa-newspaper"></i></div><h3>${b.title}</h3><p style="color:var(--text-muted);">${b.date?.toDate?.().toDateString() || 'Latest'}</p><p>${b.summary || b.content?.substring(0,100)}</p></div>`; }); container.innerHTML = html; }
+
+    function attachFilter() { const filterBtns = document.querySelectorAll('.filter-btn'); const projects = document.querySelectorAll('.project-card'); filterBtns.forEach(btn => { btn.addEventListener('click', () => { filterBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active'); const filter = btn.getAttribute('data-filter'); projects.forEach(proj => { if(filter === 'all' || proj.getAttribute('data-category') === filter) proj.style.display = 'block'; else proj.style.display = 'none'; }); }); }); }
+
+    // Search
+    const searchToggle = document.getElementById('searchToggle'); const searchOverlay = document.getElementById('searchOverlay'); const searchClose = document.getElementById('searchClose'); const searchInput = document.getElementById('searchInput'); const searchResults = document.getElementById('searchResults');
+    searchToggle.addEventListener('click', () => searchOverlay.classList.add('active'));
+    searchClose.addEventListener('click', () => searchOverlay.classList.remove('active'));
+    searchInput.addEventListener('input', async () => { const query = searchInput.value.trim().toLowerCase(); if(!query) { searchResults.classList.remove('active'); return; } const projectsSnap = await getDocs(collection(db, 'projects')); let matches = []; projectsSnap.forEach(doc => { if(doc.data().name?.toLowerCase().includes(query) || doc.data().description?.toLowerCase().includes(query)) matches.push(doc.data().name); }); const blogSnap = await getDocs(collection(db, 'blog')); blogSnap.forEach(doc => { if(doc.data().title?.toLowerCase().includes(query)) matches.push(doc.data().title); }); if(matches.length === 0) searchResults.innerHTML = '<div>No results</div>'; else searchResults.innerHTML = matches.map(m => `<div class="search-result-item">🔍 ${m}</div>`).join(''); searchResults.classList.add('active'); });
+
+    // Contact form submission to Firestore
+    const contactForm = document.getElementById('contactForm');
+    contactForm.addEventListener('submit', async (e) => { e.preventDefault(); const name = document.getElementById('contactName').value; const email = document.getElementById('contactEmail').value; const message = document.getElementById('contactMsg').value; await addDoc(collection(db, 'messages'), { name, email, message, timestamp: new Date() }); alert('✅ Message sent! I will get back to you soon.'); contactForm.reset(); });
+
+    // Seed initial data if empty (for demo convenience)
+    async function seedInitialData() { const projectsSnap = await getDocs(collection(db, 'projects')); if(projectsSnap.empty) { const sampleProjects = [{ name: "Personal Portfolio Website", description: "Modern responsive portfolio with dark mode and animations.", tech: "HTML/CSS/JS, Firebase", category: "web", icon: "globe", demoUrl: "#", githubUrl: "#", createdAt: new Date() }, { name: "Cinematic Video Edit", description: "Short film editing using DaVinci Resolve, color grading.", tech: "DaVinci Resolve", category: "video", icon: "film", demoUrl: "#", githubUrl: "#", createdAt: new Date() }, { name: "Brand Identity Design", description: "Logo, social media kit, and visual identity for a startup.", tech: "Photoshop, Illustrator", category: "design", icon: "palette", demoUrl: "#", githubUrl: "#", createdAt: new Date() }]; for(let p of sampleProjects) await addDoc(collection(db, 'projects'), p); }
+    const musicSnap = await getDocs(collection(db, 'music')); if(musicSnap.empty) { await addDoc(collection(db, 'music'), { title: "Midnight Waves (Preview)", description: "Ambient electronic track", audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", createdAt: new Date() }); }
+    const gallerySnap = await getDocs(collection(db, 'gallery')); if(gallerySnap.empty) { const demoImgs = ["https://picsum.photos/id/1015/400/300", "https://picsum.photos/id/104/400/300", "https://picsum.photos/id/106/400/300", "https://picsum.photos/id/107/400/300"]; for(let i=0;i<demoImgs.length;i++) await addDoc(collection(db, 'gallery'), { url: demoImgs[i], caption: "Creative work", order: i }); }
+    const blogSnap = await getDocs(collection(db, 'blog')); if(blogSnap.empty) { await addDoc(collection(db, 'blog'), { title: "New Project Launch: WebVeda Community Clone", summary: "Working on a full-stack community platform with Firebase.", content: "Details coming soon", date: new Date() }); await addDoc(collection(db, 'blog'), { title: "Learning Blender 3D", summary: "Exploring 3D modeling and animation for future projects.", date: new Date() }); }
+    seedInitialData();
+    await loadProjects(); await loadMusic(); await loadGallery(); await loadBlog();
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.style.opacity = '1'; }); }, { threshold: 0.1 });
+    document.querySelectorAll('.section, .card').forEach(el => { el.style.opacity = '0'; el.style.transition = 'opacity 0.6s ease'; observer.observe(el); });
+    setTimeout(() => { document.querySelectorAll('.section, .card').forEach(el => { if(el.style.opacity === '0') el.style.opacity = '1'; }); }, 500);
+</script>
+</body>
+</html>
